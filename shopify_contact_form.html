@@ -1,0 +1,35 @@
+<r:contact id='contact-form'>
+  <p><r:errors /></p>
+  <p>
+    Your First Name <span class="req">*</span><br/>
+    <r:first_name_tag class='required' />
+  </p>
+  <p>
+    Your Last Name <span class="req">*</span><br/>
+    <r:last_name_tag class='required' />
+  </p>
+  <p>
+    Your Email address <span class="req">*</span><br/>
+    <r:email_tag class='required validate-email' />
+  </p>
+  <p>
+    Regarding <span class="req">*</span><br/>
+    <r:destination_select />
+  </p>
+  <p>
+    Your Phone number<br/>
+    <r:phone_number_tag />
+  </p>
+
+  <p>
+    Message <span class="req">*</span><br/>
+    <r:message_area class='required' />
+  </p>
+
+  <input type="hidden" name="move_to" value="http://www.shopify.com/contact/thank-you" />
+
+  <p style="font-size: 10px;margin: 0; float:right"><span class="req">*</span> required field</p>
+
+  <p class="submit-btn"><r:submit_tag value="Send Message" /></p>
+</r:contact>
+

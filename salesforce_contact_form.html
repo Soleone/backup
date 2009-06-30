@@ -1,0 +1,45 @@
+<form action="https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST" id="contact-form">
+  <input type=hidden name="oid" value="00D80000000cmae">
+  <input type=hidden name="retURL" value="http://www.shopify.com/contact/thank-you">
+  <input type=hidden name="lead_source" value="Contact Form">
+
+  <p>
+    Your First Name <span class="req">*</span><br/>
+    <input name="first_name" type="text" class="required" />
+  </p>
+  <p>
+    Your Last Name <span class="req">*</span><br/>
+    <input name="last_name" type="text" class="required" />
+  </p>
+  <p>
+    Your Email address <span class="req">*</span><br/>
+    <input name="email" type="text" class="required" />    
+  </p>
+  <p>
+   Regarding <span class="req">*</span><br/>
+   <select  id="00N80000003fooq" name="00N80000003fooq" title="Category">
+     <option value="General Help">General Help</option>
+     <option value="Custom Design">Custom Design</option>
+     <option value="Sales Inquiry">Sales Inquiry</option>
+     <option value="Affiliate Inquiry">Affiliate Inquiry</option>
+     <option value="Partnerships">Partnerships</option>
+   </select>
+  </p>
+  <p>
+    Your Phone number<br/>
+    <input name="phone" type="text" />
+  </p>
+
+  <p>
+    Message <span class="req">*</span><br/>
+    <textarea name="description" rows="8" class="required"></textarea>
+  </p>
+
+  <p style="font-size: 10px;margin: 0; float:right">
+    <span class="req">*</span> required field
+  </p>
+
+  <p class="submit-btn">
+    <input type="submit" name="submit" value="Send Message">
+  </p>
+</form>
