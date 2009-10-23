@@ -6,4 +6,4 @@ verses << "all you mother fuckers can kiss my ass bitch why ask just give me som
 verses << "Betty has a pretty ass jiggy titts shitty hats and its no surprise she wants to get bitch slapped by me she will suck with killer lips on those dicks its her shit she wants to make money and then i guess its okay but the more i hear her voice have no choice call the boys we going to party like what the fucks going on"
 verses << "Sitting in my lower ride all the night overtight feels like on a roller ride cause i am fucking high i dont know whats left to do wrestle you that should do and the fucking rescue crew gets a load of my shot gun"
 
-`say -o say_rap.aiff -v Cello "#{verses.join(' ')}"`
+`say -v Cello "#{verses.join(' ')}"`
