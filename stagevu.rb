@@ -6,12 +6,11 @@ require 'net/http'
 URL = "http://stagevu.com/search?in=Videos&for="
 VIDEO_PATH = "/Users/Soleone/Movies/TV series/Trailer Park Boys"
 THREADS = 2
+COMMANDS = ['download', 'simulate', 'search']
+COMMAND_NAME = 'svu'
 
-command, keywords, episodes, @directory  = *ARGV
-print "Trying to #{command} videos for '#{keywords}'"
-print " with episodes #{episodes}" if episodes
-print " into target directory #{@directory}" if @directory
-puts
+@command, @keywords, @episodes, @directory  = *ARGV
+
 
 def search(words)
   url = URL + words.gsub(/ /, '+')
@@ -109,6 +108,7 @@ def handle_episodes(keywords, episodes_string)
 end
 
 def episode_filenames(keywords, episodes_string)
+  return keywords unless episodes_string
   if episodes_string =~ /S(\d+)E(\d+)-S\d+E(\d+)/i
     # Format: series S0xEyy
     season, first, last = $1, $2, $3
@@ -125,18 +125,55 @@ def episode_filenames(keywords, episodes_string)
   episodes
 end
 
+def handle_invalid_user_input
+  unless @command && COMMANDS.include?(@command.downcase)
+    puts "Unknown command: #{@command}, use one of #{COMMANDS.join(', ')}"
+    exit
+  end
+  @command = @command.downcase
+
+  if @keywords.nil? || @keywords.empty?
+    puts "Can't #{@command} without keywords!\nSingle usage:"
+    puts "  #{COMMAND_NAME} #{@command} \"your keywords\""
+    if @command == 'download' || @command == 'simulate'
+      puts "Multi file usage:"
+      puts "  #{COMMAND_NAME} #{@command} \"your keywords\" s01e01-s01e10"
+      puts "Custom directory download:"
+      puts "  #{COMMAND_NAME} #{@command} \"your keywords\" s01e01-s01e10 ~/Movies/My existing directory"
+    end
+    exit
+  end  
+end
+
+def execute_command
+  print "Trying to #{@command} videos for '#{@keywords}'"
+  print " with episodes #{@episodes}" if @episodes
+  puts " into target directory #{@directory}" if @directory
+
+  case @command.downcase
+  when 'download'
+    handle_episodes(@keywords, @episodes)
+  when'search'
+    links = search(@keywords)
+    links.each_with_index do |link, index|
+      puts "[%02d] #{link.first} - #{link.last}" % (index+1)
+    end
+    puts "Press a number to download or any other key to quit"
+    print "Select: "
+    $stdout.flush
+    choice = $stdin.gets.chomp
+    if number = choice[/\d+/]
+      title, url = *links[number.to_i-1]
+      puts "Downloading #{title} -> #{url}"
+      video = video_link(url)
+      stream_copy(video, title.first.gsub(/ /, '_'))
+    end
+  when 'simulate'
+    puts "Simulating download:"
+    episode_filenames(@keywords, @episodes)  
+  end  
+end
 
 # MAIN
-if command.downcase == 'download'
-  handle_episodes(keywords, episodes)
-elsif command.downcase == 'search'
-  links = search(keywords)
-  links.each do |link|
-    puts "#{link.first} - #{link.last}"
-  end
-elsif command.downcase == 'simulate'
-  puts "Simulating download:"
-  episode_filenames(keywords, episodes)
-else
-  puts "Unknown command: #{command}, use one of 'download', 'search' or 'simulate'"
-end
+handle_invalid_user_input
+execute_command
